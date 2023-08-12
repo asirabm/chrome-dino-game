@@ -1,11 +1,12 @@
 import {
+  getCutomProperty,
   incrementCutomProperty,
   setCutomProperty,
 } from "./updateCustomeProperty.js";
 
 const dinoEl = document.querySelector("[data-dino]");
 const JUMP_SPEED = 0.45;
-const GRAVITY = 0.011;
+const GRAVITY = 0.0015;
 const DINO_FRAME_COUNT = 2;
 const FRAME_TIME = 100;
 
@@ -30,10 +31,15 @@ export function updateDino(delta, speedScale) {
   handleJump(delta);
 }
 function handleJump(delta) {
-  console.log("Hello");
+  // console.log("Hello");
   if (!isJumping) return;
-  console.log("Hello");
+  // console.log("Hello");
   incrementCutomProperty(dinoEl, "--bottom", yVelocity * delta);
+  if (getCutomProperty(dinoEl, "--bottom") <= 0) {
+    setCutomProperty(dinoEl, "--bottom", 0);
+    isJumping = false;
+  }
+  yVelocity -= GRAVITY * delta;
 }
 function handleRun(delta, speedScale) {
   if (isJumping) {
@@ -51,7 +57,7 @@ function onJump(e) {
   console.log("Jumpinf");
   console.log(e.code);
   console.log(isJumping);
-  if (e.code !== "space" || isJumping) return;
+  if (e.code !== "Space" || isJumping) return;
   console.log("Jumpinfakscnk");
   yVelocity = JUMP_SPEED;
   isJumping = true;
