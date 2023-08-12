@@ -1,4 +1,5 @@
 import { setupGround, updateGround } from "./ground.js";
+import { setupDino, updateDino } from "./Dino.js";
 
 const WORLD_WIDTH = 100;
 const WORLD_HEIGHT = 30;
@@ -9,7 +10,7 @@ const startScreenEl = document.querySelector("[data-start-screen]");
 //console.log(mainElemt);
 window.addEventListener("resize", setPixelToMainScale);
 setPixelToMainScale();
-setupGround();
+
 window.addEventListener("keydown", startGame, { once: true });
 let LastTime;
 let speedScale;
@@ -36,11 +37,13 @@ function update(time) {
   }
   let delta = time - LastTime;
   updateGround(delta, speedScale);
+  updateDino(delta, speedScale);
   updateSpeedScale(delta);
   updateScore(delta);
   LastTime = time;
   window.requestAnimationFrame(update);
 }
+
 function updateScore(delta) {
   score += delta * 0.01;
 
@@ -54,6 +57,8 @@ function startGame() {
   LastTime = null;
   speedScale = 1;
   score = 0;
+  setupGround();
+  setupDino();
   startScreenEl.classList.add("hide");
   window.requestAnimationFrame(update);
 }
